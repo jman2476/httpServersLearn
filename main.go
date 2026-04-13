@@ -18,6 +18,6 @@ func main() {
 		Handler: serveMux,
 	}
 
-	log.Printf("Start serving on port %s", port)
+	log.Printf("Start serving from %s on port %s", filepathRoot, port)
 	log.Fatal(server.ListenAndServe())
 }
