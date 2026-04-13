@@ -1,10 +1,15 @@
 package main
 
-import "net/http"
+import (
+	"net/http"
+)
 
 func main() {
 	serveMux := http.NewServeMux() //server multiplexer
-	server := http.Server{
+
+	serveMux.Handle("/", http.FileServer(http.Dir(".")))
+
+	server := &http.Server{
 		Addr:    ":8080",
 		Handler: serveMux,
 	}
