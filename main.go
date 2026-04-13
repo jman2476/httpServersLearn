@@ -10,7 +10,6 @@ func main() {
 	const filepathRoot = "."
 
 	serveMux := http.NewServeMux() //server multiplexer
-
 	rmPrefixHandler := http.StripPrefix("/app", http.FileServer(http.Dir(filepathRoot)))
 	serveMux.Handle("/app/", rmPrefixHandler)
 	serveMux.HandleFunc("/healthz", handlerHealthz)
@@ -26,7 +25,6 @@ func main() {
 
 func handlerHealthz(w http.ResponseWriter, req *http.Request) {
 	w.Header().Add("Content-Type", "text/plain; charset=utf-8")
-	// w.Header().Set("charset", "utf-8")
 	w.WriteHeader(http.StatusOK)
 	w.Write([]byte("OK"))
 }
