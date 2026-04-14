@@ -16,8 +16,8 @@ func main() {
 	rmPrefixHandler := http.StripPrefix("/app", http.FileServer(http.Dir(filepathRoot)))
 	mux.Handle("/app/", apiCfg.middlewareMetricsInc(rmPrefixHandler))
 	mux.HandleFunc("GET /api/healthz", handlerHealthz)
-	mux.HandleFunc("GET /api/metrics", apiCfg.handlerMetrics)
-	mux.HandleFunc("POST /api/reset", apiCfg.handleMetricReset)
+	mux.HandleFunc("GET /admin/metrics", apiCfg.handlerMetrics)
+	mux.HandleFunc("POST /admin/reset", apiCfg.handleMetricReset)
 
 	server := &http.Server{
 		Addr:    ":" + port,
@@ -47,9 +47,15 @@ func (c *apiConfig) middlewareMetricsInc(next http.Handler) http.Handler {
 }
 
 func (c *apiConfig) handlerMetrics(w http.ResponseWriter, req *http.Request) {
-	w.Header().Add("Content-Type", "text/plain; charset=utf-8")
+	w.Header().Add("Content-Type", "text/html; charset=utf-8")
 	w.WriteHeader(http.StatusOK)
-	hits := fmt.Sprint("Hits: ", c.fileserverHits.Load())
+	hits := fmt.Sprintf(`
+	<html>
+  		<body>
+    		<h1>Welcome, Chirpy Admin</h1>
+    		<p>Chirpy has been visited %d times!</p>
+  		</body>
+	</html>`, c.fileserverHits.Load())
 	w.Write([]byte(hits))
 	log.Println("Metrics checked: ", c.fileserverHits.Load())
 }
@@ -58,6 +64,6 @@ func (c *apiConfig) handleMetricReset(w http.ResponseWriter, req *http.Request) 
 	w.Header().Add("Content-Type", "text/plain; charset=utf-8")
 	w.WriteHeader(http.StatusOK)
 	c.fileserverHits.Store(0)
-	w.Write([]byte("Server metrics reset"))
+	w.Write([]byte("Server metrics reset\n"))
 	log.Println("Metrics reset")
 }
