@@ -2,12 +2,17 @@ package main
 
 import (
 	"encoding/json"
+	"fmt"
 	"log"
 	"net/http"
 )
 
 func respondWithError(w http.ResponseWriter, code int, msg string, errMSG error) {
-	log.Printf("Encountered: %s\n		Sending: %d-%s", errMSG, code, msg)
+	logMsg := fmt.Sprintf("Sending: %d-%s", code, msg)
+	if errMSG != nil {
+		logMsg = fmt.Sprintf("Encountered: %s\n		", errMSG) + logMsg
+	}
+	log.Println(logMsg)
 
 	errResp := struct {
 		Error string `json:"error"`
