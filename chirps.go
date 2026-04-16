@@ -51,6 +51,21 @@ func (cfg *apiConfig) handlerNewChirp(w http.ResponseWriter, req *http.Request) 
 	respondWithJSON(w, 201, mapChirp(chirp))
 }
 
+func (cfg *apiConfig) handlerGetAllChirps(w http.ResponseWriter, req *http.Request) {
+	chirps, err := cfg.dbQueries.GetAllChirps(req.Context())
+	if err != nil {
+		respondWithError(w, 500, "Error getting chirps", err)
+		return
+	}
+
+	var allChirps []Chirp
+	for _, c := range chirps {
+		allChirps = append(allChirps, mapChirp(c))
+	}
+
+	respondWithJSON(w, 200, allChirps)
+}
+
 func mapChirp(c database.Chirp) Chirp {
 	return Chirp{
 		ID:        c.ID,

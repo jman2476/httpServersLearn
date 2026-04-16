@@ -1,7 +1,7 @@
 info:
-  name: New Chirp Valid
+  name: New Chirp Valid 3
   type: http
-  seq: 8
+  seq: 10
 
 http:
   method: POST
@@ -10,7 +10,7 @@ http:
     type: json
     data: |-
       {
-        "body": "To infinity and beyond",
+        "body": "Obamna",
         "user_id": "d104be8c-b3f1-40cb-af92-d52e9d4d3747"
       }
   auth: inherit

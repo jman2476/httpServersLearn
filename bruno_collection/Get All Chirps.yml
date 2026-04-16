@@ -1,17 +1,11 @@
 info:
-  name: New Chirp Invalid
+  name: Get All Chirps
   type: http
-  seq: 7
+  seq: 11
 
 http:
-  method: POST
+  method: GET
   url: http://localhost:8080/api/chirps
-  body:
-    type: json
-    data: |-
-      {
-        "body": "this is an invalid chirp"
-      }
   auth: inherit
 
 settings:
