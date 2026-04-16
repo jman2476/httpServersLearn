@@ -1,0 +1,21 @@
+info:
+  name: /api/validate_chirp profanity
+  type: http
+  seq: 7
+
+http:
+  method: POST
+  url: http://localhost:8080/api/validate_chirp
+  body:
+    type: json
+    data: |-
+      {
+        "body": "this is a test chirp. sharbert Sharbert forNaX fornax! What a kerFufFle we are in!Kerfuffle"
+      }
+  auth: inherit
+
+settings:
+  encodeUrl: true
+  timeout: 0
+  followRedirects: true
+  maxRedirects: 5
