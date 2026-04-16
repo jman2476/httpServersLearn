@@ -6,6 +6,7 @@ import (
 	"time"
 
 	"github.com/google/uuid"
+	"github.com/jman2476/httpServersLearn/internal/database"
 )
 
 type Chirp struct {
@@ -18,8 +19,8 @@ type Chirp struct {
 
 func (cfg *apiConfig) handlerNewChirp(w http.ResponseWriter, req *http.Request) {
 	type parameters struct {
-		Body    string    `json:"body"`
-		User_ID uuid.UUID `json:"user_id"`
+		Body   string    `json:"body"`
+		UserID uuid.UUID `json:"user_id"`
 	}
 
 	decoder := json.NewDecoder(req.Body)
@@ -28,5 +29,34 @@ func (cfg *apiConfig) handlerNewChirp(w http.ResponseWriter, req *http.Request) 
 	if err != nil {
 		respondWithError(w, 500, "Error decoding chirp", err)
 		return
+	}
+
+	valid, msg := validateChirp(params.Body)
+	if !valid {
+		respondWithError(w, 400, msg, nil)
+		return
+	}
+
+	chirpArgs := database.CreateChirpParams{
+		Body:   msg,
+		UserID: params.UserID,
+	}
+
+	chirp, err := cfg.dbQueries.CreateChirp(req.Context(), chirpArgs)
+	if err != nil {
+		respondWithError(w, 500, "Error creating chirp", err)
+		return
+	}
+
+	respondWithJSON(w, 201, mapChirp(chirp))
+}
+
+func mapChirp(c database.Chirp) Chirp {
+	return Chirp{
+		ID:        c.ID,
+		CreatedAt: c.CreatedAt,
+		UpdatedAt: c.UpdatedAt,
+		Body:      c.Body,
+		UserID:    c.UserID,
 	}
 }

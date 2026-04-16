@@ -1,11 +1,11 @@
 info:
-  name: /api/validate_chirp 2long
+  name: New Chirp 2long
   type: http
-  seq: 6
+  seq: 5
 
 http:
   method: POST
-  url: http://localhost:8080/api/validate_chirp
+  url: http://localhost:8080/api/chirps
   body:
     type: json
     data: |-

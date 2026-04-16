@@ -1,16 +1,17 @@
 info:
-  name: New user VALID
+  name: New Chirp Valid
   type: http
-  seq: 7
+  seq: 9
 
 http:
   method: POST
-  url: http://localhost:8080/api/users
+  url: http://localhost:8080/api/chirps
   body:
     type: json
     data: |-
       {
-        "email": "bobthomas@tankengine.com"
+        "body": "To infinity and beyond",
+        "user_id": "550e8400-e29b-41d4-a716-446655440000"
       }
   auth: inherit
 

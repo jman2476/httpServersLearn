@@ -1,16 +1,16 @@
 info:
-  name: /api/validate_chirp
+  name: New Chirp profanity
   type: http
-  seq: 8
+  seq: 6
 
 http:
   method: POST
-  url: http://localhost:8080/api/validate_chirp
+  url: http://localhost:8080/api/chirps
   body:
     type: json
     data: |-
       {
-        "body": "this is a test chirp"
+        "body": "this is a test chirp. sharbert Sharbert forNaX fornax! What a kerFufFle we are in!Kerfuffle"
       }
   auth: inherit
 
