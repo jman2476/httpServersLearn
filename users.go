@@ -8,17 +8,19 @@ import (
 	"time"
 
 	"github.com/google/uuid"
+	"github.com/jman2476/httpServersLearn/internal/database"
 )
+
+type User struct {
+	ID        uuid.UUID `json:"id"`
+	CreatedAt time.Time `json:"created_at"`
+	UpdatedAt time.Time `json:"updated_at"`
+	Email     string    `json:"email"`
+}
 
 func (cfg *apiConfig) handlerNewUser(w http.ResponseWriter, req *http.Request) {
 	type parameters struct {
 		Email string `json:"email"`
-	}
-	type returnVals struct {
-		ID         uuid.UUID `json:"id"`
-		Created_At time.Time `json:"created_at"`
-		Updated_At time.Time `json:"updated_at"`
-		Email      string    `json:"email"`
 	}
 
 	decoder := json.NewDecoder(req.Body)
@@ -45,5 +47,14 @@ func (cfg *apiConfig) handlerNewUser(w http.ResponseWriter, req *http.Request) {
 		return
 	}
 
-	respondWithJSON(w, 201, user)
+	respondWithJSON(w, 201, mapUser(user))
+}
+
+func mapUser(u database.User) User {
+	return User{
+		ID:        u.ID,
+		CreatedAt: u.CreatedAt,
+		UpdatedAt: u.UpdatedAt,
+		Email:     u.Email,
+	}
 }
