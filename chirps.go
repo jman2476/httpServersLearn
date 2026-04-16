@@ -66,6 +66,21 @@ func (cfg *apiConfig) handlerGetAllChirps(w http.ResponseWriter, req *http.Reque
 	respondWithJSON(w, 200, allChirps)
 }
 
+func (cfg *apiConfig) handlerGetChirpByID(w http.ResponseWriter, req *http.Request) {
+	chirp_id, err := uuid.Parse(req.PathValue("chirpID"))
+	if err != nil {
+		respondWithError(w, 400, "Invalid UUID value", err)
+		return
+	}
+	chirp, err := cfg.dbQueries.GetChirpByID(req.Context(), chirp_id)
+	if err != nil {
+		respondWithError(w, 404, "Chirp not found", err)
+		return
+	}
+
+	respondWithJSON(w, 200, mapChirp(chirp))
+}
+
 func mapChirp(c database.Chirp) Chirp {
 	return Chirp{
 		ID:        c.ID,
