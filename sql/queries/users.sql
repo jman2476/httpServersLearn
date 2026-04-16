@@ -6,3 +6,6 @@ values (
     now(),
     $1
 ) returning *;
+
+-- name: ClearUsers :exec
+delete from users;
