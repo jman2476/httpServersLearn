@@ -10,6 +10,7 @@ func validateChirp(chirp string) (bool, string) {
 	const maxChirpLength = 140
 
 	currentChirpLength := len(chirp)
+
 	if currentChirpLength > maxChirpLength {
 		return false, "Chirp is too long"
 	}

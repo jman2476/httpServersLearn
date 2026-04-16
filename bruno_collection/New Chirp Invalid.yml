@@ -1,7 +1,7 @@
 info:
   name: New Chirp Invalid
   type: http
-  seq: 10
+  seq: 8
 
 http:
   method: POST
