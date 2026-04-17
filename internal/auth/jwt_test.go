@@ -19,7 +19,7 @@ func TestMakeJWT(t *testing.T) {
 		inputID:         uuid.New(),
 		inputSecret:     "super secret",
 		inputExpiration: dur,
-		expected:        "token",
+		expected:        "string",
 	}
 
 	token, err := MakeJWT(cases.inputID, cases.inputSecret, cases.inputExpiration)
@@ -35,7 +35,7 @@ func TestMakeJWT(t *testing.T) {
 func TestValidateJWT(t *testing.T) {
 	dur5min, _ := time.ParseDuration("5m")
 	dur3s, _ := time.ParseDuration("3s")
-	dur10d, _ := time.ParseDuration("10d")
+	dur10h, _ := time.ParseDuration("10h")
 
 	cases := []struct {
 		inputID     uuid.UUID
@@ -76,7 +76,7 @@ func TestValidateJWT(t *testing.T) {
 		}, {
 			inputID:     uuid.New(),
 			inputSecret: "donde esta la bibliotecha?",
-			inputExp:    dur10d,
+			inputExp:    dur10h,
 			wait:        false,
 			expected:    uuid.UUID{},
 			expectedErr: nil,
@@ -87,6 +87,7 @@ func TestValidateJWT(t *testing.T) {
 		c.expected = c.inputID
 		token, err := MakeJWT(c.inputID, c.inputSecret, c.inputExp)
 		if err != nil {
+			t.Errorf("Duration: %v Wait: %t", c.inputExp, c.wait)
 			t.Errorf("Fail: issue making JWT %s", err)
 		}
 
@@ -96,12 +97,17 @@ func TestValidateJWT(t *testing.T) {
 
 		id, err := ValidateJWT(token, c.inputSecret)
 		if err != nil {
-			if !c.wait {
+			if c.wait {
+				t.Logf("Token expired as expected %v", id)
+				continue
+			} else {
+				t.Errorf("Duration: %v Wait: %t", c.inputExp, c.wait)
 				t.Errorf("Fail: token not validated %s", err)
 			}
 		}
 
 		if id != c.expected {
+			t.Errorf("Duration: %v Wait: %t", c.inputExp, c.wait)
 			t.Errorf("Fail: id %s does not match expected %s; err %s", id.String(), c.expected.String(), err)
 		}
 	}
