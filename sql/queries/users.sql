@@ -9,3 +9,8 @@ values (
 
 -- name: ClearUsers :exec
 delete from users;
+
+-- name: GetUserByEmail :one
+select *
+from users 
+where email = $1;

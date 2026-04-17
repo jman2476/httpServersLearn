@@ -5,19 +5,10 @@ import (
 	"net/http"
 	"net/mail"
 	"strings"
-	"time"
 
-	"github.com/google/uuid"
 	"github.com/jman2476/httpServersLearn/internal/auth"
 	"github.com/jman2476/httpServersLearn/internal/database"
 )
-
-type User struct {
-	ID        uuid.UUID `json:"id"`
-	CreatedAt time.Time `json:"created_at"`
-	UpdatedAt time.Time `json:"updated_at"`
-	Email     string    `json:"email"`
-}
 
 func (cfg *apiConfig) handlerNewUser(w http.ResponseWriter, req *http.Request) {
 	type parameters struct {
@@ -61,13 +52,4 @@ func (cfg *apiConfig) handlerNewUser(w http.ResponseWriter, req *http.Request) {
 	}
 
 	respondWithJSON(w, 201, mapUser(user))
-}
-
-func mapUser(u database.CreateUserRow) User {
-	return User{
-		ID:        u.ID,
-		CreatedAt: u.CreatedAt,
-		UpdatedAt: u.UpdatedAt,
-		Email:     u.Email,
-	}
 }
