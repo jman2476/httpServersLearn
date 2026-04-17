@@ -8,6 +8,7 @@ import (
 	"time"
 
 	"github.com/google/uuid"
+	"github.com/jman2476/httpServersLearn/internal/auth"
 	"github.com/jman2476/httpServersLearn/internal/database"
 )
 
@@ -20,7 +21,8 @@ type User struct {
 
 func (cfg *apiConfig) handlerNewUser(w http.ResponseWriter, req *http.Request) {
 	type parameters struct {
-		Email string `json:"email"`
+		Email    string `json:"email"`
+		Password string `json:"password"`
 	}
 
 	decoder := json.NewDecoder(req.Body)
@@ -37,7 +39,18 @@ func (cfg *apiConfig) handlerNewUser(w http.ResponseWriter, req *http.Request) {
 		return
 	}
 
-	user, err := cfg.dbQueries.CreateUser(req.Context(), email.Address)
+	hash, err := auth.HashPassword(params.Password)
+	if err != nil {
+		respondWithError(w, 500, "Issue hashing passord", err)
+		return
+	}
+
+	userArgs := database.CreateUserParams{
+		Email:          email.Address,
+		HashedPassword: hash,
+	}
+
+	user, err := cfg.dbQueries.CreateUser(req.Context(), userArgs)
 	if err != nil {
 		if strings.Contains(err.Error(), "violates unique constraint \"users_email_key\"") {
 			respondWithError(w, 400, "User already exists", err)
@@ -50,7 +63,7 @@ func (cfg *apiConfig) handlerNewUser(w http.ResponseWriter, req *http.Request) {
 	respondWithJSON(w, 201, mapUser(user))
 }
 
-func mapUser(u database.User) User {
+func mapUser(u database.CreateUserRow) User {
 	return User{
 		ID:        u.ID,
 		CreatedAt: u.CreatedAt,
