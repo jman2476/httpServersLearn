@@ -1,16 +1,17 @@
 info:
-  name: New Chirp Invalid
+  name: Login user INVALID email
   type: http
-  seq: 9
+  seq: 8
 
 http:
   method: POST
-  url: http://localhost:8080/api/chirps
+  url: http://localhost:8080/api/login
   body:
     type: json
     data: |-
       {
-        "body": "this is an invalid chirp"
+        "email": "bobthomastankengine.com",
+        "password": "tootToot"
       }
   auth: inherit
 

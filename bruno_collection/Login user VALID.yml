@@ -1,16 +1,17 @@
 info:
-  name: New user INVALID
+  name: Login user VALID
   type: http
   seq: 6
 
 http:
   method: POST
-  url: http://localhost:8080/api/users
+  url: http://localhost:8080/api/login
   body:
     type: json
     data: |-
       {
-        "email": "eugeneCrabsabs"
+        "email": "bobthomas@tankengine.com",
+        "password": "tootToot"
       }
   auth: inherit
 
