@@ -1,12 +1,18 @@
 package auth
 
 import (
+	"errors"
 	"fmt"
+	"net/http"
+	"strings"
 	"time"
 
 	"github.com/golang-jwt/jwt/v5"
 	"github.com/google/uuid"
 )
+
+var malformedHeaderErr = errors.New("Malformed token in header")
+var missingBearerTokenErr = errors.New("Header does not contain token")
 
 func MakeJWT(userID uuid.UUID, tokenSecret string, expiresIn time.Duration) (string, error) {
 	claims := &jwt.RegisteredClaims{
@@ -43,4 +49,18 @@ func ValidateJWT(tokenString, tokenSecret string) (uuid.UUID, error) {
 	}
 
 	return id, nil
+}
+
+func GetBearerToken(headers http.Header) (string, error) {
+	bearerStr := headers.Get("Authorization")
+	if bearerStr == "" {
+		return "", missingBearerTokenErr
+	}
+
+	token, ok := strings.CutPrefix(bearerStr, "Bearer ")
+	if !ok {
+		return "", malformedHeaderErr
+	}
+
+	return token, nil
 }

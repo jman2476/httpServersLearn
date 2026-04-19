@@ -1,7 +1,10 @@
 package auth
 
 import (
+	"errors"
 	"fmt"
+	"log"
+	"net/http"
 	"testing"
 	"time"
 
@@ -106,9 +109,55 @@ func TestValidateJWT(t *testing.T) {
 			}
 		}
 
+		log.Printf("Type of actual ID: %T", id)
 		if id != c.expected {
 			t.Errorf("Duration: %v Wait: %t", c.inputExp, c.wait)
 			t.Errorf("Fail: id %s does not match expected %s; err %s", id.String(), c.expected.String(), err)
+		}
+	}
+}
+
+func TestGetBearerToken(t *testing.T) {
+	id := uuid.New()
+	secret := "Super testing secret"
+	duration, _ := time.ParseDuration("10m")
+	tokenStr, err := MakeJWT(id, secret, duration)
+	if err != nil {
+		t.Errorf("Fail: Error making token %s", err)
+	}
+
+	var headerGood = http.Header{}
+	var headerEmpty = http.Header{}
+	var headerMalformed = http.Header{}
+
+	val := fmt.Sprintf("Bearer %s", tokenStr)
+	headerGood.Add("Authorization", val)
+	headerMalformed.Add("Authorization", tokenStr)
+
+	cases := []struct {
+		input       http.Header
+		expectedStr string
+		expectedErr error
+	}{
+		{
+			input:       headerGood,
+			expectedStr: tokenStr,
+			expectedErr: nil,
+		}, {
+			input:       headerEmpty,
+			expectedStr: "",
+			expectedErr: missingBearerTokenErr,
+		}, {
+			input:       headerMalformed,
+			expectedStr: "",
+			expectedErr: malformedHeaderErr,
+		},
+	}
+
+	for _, c := range cases {
+		actualStr, actualErr := GetBearerToken(c.input)
+		if actualStr != c.expectedStr || !errors.Is(actualErr, c.expectedErr) {
+			t.Errorf("Fail: returned token and error mismatch:\nActual: %s | %s \nExpected: %s | %s\n %t %t", actualStr, actualErr, c.expectedStr, c.expectedErr, actualStr != c.expectedStr, actualErr != c.expectedErr)
 		}
 	}
 }
