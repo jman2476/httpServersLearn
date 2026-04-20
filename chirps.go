@@ -6,6 +6,7 @@ import (
 	"time"
 
 	"github.com/google/uuid"
+	"github.com/jman2476/httpServersLearn/internal/auth"
 	"github.com/jman2476/httpServersLearn/internal/database"
 )
 
@@ -19,13 +20,23 @@ type Chirp struct {
 
 func (cfg *apiConfig) handlerNewChirp(w http.ResponseWriter, req *http.Request) {
 	type parameters struct {
-		Body   string    `json:"body"`
-		UserID uuid.UUID `json:"user_id"`
+		Body string `json:"body"`
+	}
+
+	token, err := auth.GetBearerToken(req.Header)
+	if err != nil {
+		respondWithError(w, 401, "Forbidden", err)
+	}
+
+	userID, err := auth.ValidateJWT(token, cfg.secret)
+	if err != nil {
+		respondWithError(w, 401, "Forbidden", err)
+		return
 	}
 
 	decoder := json.NewDecoder(req.Body)
 	params := parameters{}
-	err := decoder.Decode(&params)
+	err = decoder.Decode(&params)
 	if err != nil {
 		respondWithError(w, 500, "Error decoding chirp", err)
 		return
@@ -39,7 +50,7 @@ func (cfg *apiConfig) handlerNewChirp(w http.ResponseWriter, req *http.Request) 
 
 	chirpArgs := database.CreateChirpParams{
 		Body:   msg,
-		UserID: params.UserID,
+		UserID: userID,
 	}
 
 	chirp, err := cfg.dbQueries.CreateChirp(req.Context(), chirpArgs)

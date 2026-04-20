@@ -6,12 +6,14 @@ info:
 http:
   method: POST
   url: http://localhost:8080/api/chirps
+  headers:
+    - name: Authorization
+      value: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJjaGlycHktYWNjZXNzIiwic3ViIjoiMjYyZjdlMmYtNTY2MS00MjQ5LWI3MzYtZmJiZDQ0NDNjYzc2IiwiZXhwIjoxNzc2NjUxNTM2LCJpYXQiOjE3NzY2NTE1MzZ9.tuHZmIIoedVRQho930X13hxnNjXfBMidCpqcqAhvb5Q
   body:
     type: json
     data: |-
       {
         "body": "To infinity and beyond",
-        "user_id": "d104be8c-b3f1-40cb-af92-d52e9d4d3747"
       }
   auth: inherit
 

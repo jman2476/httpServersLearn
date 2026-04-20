@@ -11,7 +11,7 @@ http:
     data: |-
       {
         "body": "Here we go again",
-        "user_id": "d104be8c-b3f1-40cb-af92-d52e9d4d3747"
+        "user_id": "0bb23849-4c58-4111-981b-e33c3f143af8"
       }
   auth: inherit
 
