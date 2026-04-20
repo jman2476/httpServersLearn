@@ -1,7 +1,7 @@
 info:
-  name: Login user VALID
+  name: Login user 5m exp
   type: http
-  seq: 6
+  seq: 7
 
 http:
   method: POST
@@ -11,7 +11,8 @@ http:
     data: |-
       {
         "email": "bobthomas@tankengine.com",
-        "password": "tootToot"
+        "password": "tootToot",
+        "expires_in_seconds": 300
       }
   auth: inherit
 

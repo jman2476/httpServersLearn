@@ -8,12 +8,12 @@ http:
   url: http://localhost:8080/api/chirps
   headers:
     - name: Authorization
-      value: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJjaGlycHktYWNjZXNzIiwic3ViIjoiMjYyZjdlMmYtNTY2MS00MjQ5LWI3MzYtZmJiZDQ0NDNjYzc2IiwiZXhwIjoxNzc2NjUxNTM2LCJpYXQiOjE3NzY2NTE1MzZ9.tuHZmIIoedVRQho930X13hxnNjXfBMidCpqcqAhvb5Q
+      value: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJjaGlycHktYWNjZXNzIiwic3ViIjoiOTQ0YmU1N2YtYjNiNC00OGU3LTliZWUtZjc4MjFmNDhmOTM4IiwiZXhwIjoxNzc2NzA1MjQzLCJpYXQiOjE3NzY3MDQ5NDN9.8-5rISSJC37hhejBji_GM540CxZkOst3wUGJVNxo-Nw
   body:
     type: json
     data: |-
       {
-        "body": "To infinity and beyond",
+        "body": "To infinity and beyond"
       }
   auth: inherit
 

@@ -2,7 +2,6 @@ package main
 
 import (
 	"encoding/json"
-	"log"
 	"net/http"
 	"net/mail"
 	"time"
@@ -46,8 +45,8 @@ func (cfg *apiConfig) handlerLogin(w http.ResponseWriter, req *http.Request) {
 		respondWithError(w, 401, "Forbidden", err)
 		return
 	}
-	log.Printf("Token duration: %d  %d", params.ExpiresInSeconds, time.Duration(params.ExpiresInSeconds))
-	token, err := auth.MakeJWT(user.ID, cfg.secret, time.Duration(params.ExpiresInSeconds))
+
+	token, err := auth.MakeJWT(user.ID, cfg.secret, time.Duration(params.ExpiresInSeconds)*time.Second)
 
 	if err != nil {
 		respondWithError(w, 500, "Error making token", err)

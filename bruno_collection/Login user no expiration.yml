@@ -1,17 +1,17 @@
 info:
-  name: New Chirp Valid 3
+  name: Login user no expiration
   type: http
-  seq: 12
+  seq: 6
 
 http:
   method: POST
-  url: http://localhost:8080/api/chirps
+  url: http://localhost:8080/api/login
   body:
     type: json
     data: |-
       {
-        "body": "Obamna",
-        "user_id": "0bb23849-4c58-4111-981b-e33c3f143af8"
+        "email": "bobthomas@tankengine.com",
+        "password": "tootToot"
       }
   auth: inherit
 
