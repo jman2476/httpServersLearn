@@ -11,9 +11,8 @@ import (
 
 func (cfg *apiConfig) handlerLogin(w http.ResponseWriter, req *http.Request) {
 	type parameters struct {
-		Email            string `json:"email"`
-		Password         string `json:"password"`
-		ExpiresInSeconds int    `json:"expires_in_seconds"`
+		Email    string `json:"email"`
+		Password string `json:"password"`
 	}
 
 	decoder := json.NewDecoder(req.Body)
@@ -24,9 +23,9 @@ func (cfg *apiConfig) handlerLogin(w http.ResponseWriter, req *http.Request) {
 		return
 	}
 
-	if params.ExpiresInSeconds == 0 || params.ExpiresInSeconds > 3600 {
-		params.ExpiresInSeconds = 3600
-	}
+	// if params.ExpiresInSeconds == 0 || params.ExpiresInSeconds > 3600 {
+	// 	params.ExpiresInSeconds = 3600
+	// }
 
 	email, err := mail.ParseAddress(params.Email)
 	if err != nil {
@@ -46,11 +45,11 @@ func (cfg *apiConfig) handlerLogin(w http.ResponseWriter, req *http.Request) {
 		return
 	}
 
-	token, err := auth.MakeJWT(user.ID, cfg.secret, time.Duration(params.ExpiresInSeconds)*time.Second)
+	token, err := auth.MakeJWT(user.ID, cfg.secret, time.Duration(1)*time.Hour)
 
 	if err != nil {
 		respondWithError(w, 500, "Error making token", err)
 	}
 
-	respondWithJSON(w, 200, mapUser(user, token))
+	respondWithJSON(w, 200, mapUser(user, token, auth.MakeRefreshToken()))
 }

@@ -12,6 +12,7 @@ type User struct {
 	UpdatedAt time.Time `json:"updated_at"`
 	Email     string    `json:"email"`
 	Token     string    `json:"token"`
+	Refresh   string    `json:"refresh_token"`
 }
 
 type DatabaseUser interface {
@@ -21,8 +22,8 @@ type DatabaseUser interface {
 	GetEmail() string
 }
 
-func mapUser[U DatabaseUser](u U, token string) User {
-	if token == "" {
+func mapUser[U DatabaseUser](u U, access, refresh string) User {
+	if access == "" {
 		return User{
 			ID:        u.GetID(),
 			CreatedAt: u.GetCreatedAt(),
@@ -35,6 +36,7 @@ func mapUser[U DatabaseUser](u U, token string) User {
 		CreatedAt: u.GetCreatedAt(),
 		UpdatedAt: u.GetUpdatedAt(),
 		Email:     u.GetEmail(),
-		Token:     token,
+		Token:     access,
+		Refresh:   refresh,
 	}
 }

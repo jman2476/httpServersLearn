@@ -51,5 +51,5 @@ func (cfg *apiConfig) handlerNewUser(w http.ResponseWriter, req *http.Request) {
 		return
 	}
 
-	respondWithJSON(w, 201, mapUser(user, ""))
+	respondWithJSON(w, 201, mapUser(user, "", ""))
 }
