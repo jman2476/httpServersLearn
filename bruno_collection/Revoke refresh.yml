@@ -1,7 +1,7 @@
 info:
-  name: Refresh JWT
+  name: Revoke refresh
   type: http
-  seq: 10
+  seq: 9
 
 http:
   method: POST

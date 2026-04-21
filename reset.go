@@ -11,6 +11,8 @@ func (cfg *apiConfig) handlerReset(w http.ResponseWriter, req *http.Request) {
 		return
 	}
 
+	log.Printf("POST /admin/reset")
+
 	cfg.fileserverHits.Store(0)
 	err := cfg.dbQueries.ClearUsers(req.Context())
 	if err != nil {

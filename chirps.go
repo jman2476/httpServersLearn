@@ -2,6 +2,7 @@ package main
 
 import (
 	"encoding/json"
+	"log"
 	"net/http"
 	"time"
 
@@ -22,6 +23,8 @@ func (cfg *apiConfig) handlerNewChirp(w http.ResponseWriter, req *http.Request) 
 	type parameters struct {
 		Body string `json:"body"`
 	}
+
+	log.Printf("POST /api/chirps")
 
 	token, err := auth.GetBearerToken(req.Header)
 	if err != nil {
@@ -63,6 +66,8 @@ func (cfg *apiConfig) handlerNewChirp(w http.ResponseWriter, req *http.Request) 
 }
 
 func (cfg *apiConfig) handlerGetAllChirps(w http.ResponseWriter, req *http.Request) {
+	log.Printf("GET /api/chirps")
+
 	chirps, err := cfg.dbQueries.GetAllChirps(req.Context())
 	if err != nil {
 		respondWithError(w, 500, "Error getting chirps", err)
@@ -78,6 +83,8 @@ func (cfg *apiConfig) handlerGetAllChirps(w http.ResponseWriter, req *http.Reque
 }
 
 func (cfg *apiConfig) handlerGetChirpByID(w http.ResponseWriter, req *http.Request) {
+	log.Printf("GET /api/chirps")
+
 	chirp_id, err := uuid.Parse(req.PathValue("chirpID"))
 	if err != nil {
 		respondWithError(w, 400, "Invalid UUID value", err)

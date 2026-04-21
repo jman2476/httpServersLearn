@@ -2,6 +2,7 @@ package main
 
 import (
 	"encoding/json"
+	"log"
 	"net/http"
 	"net/mail"
 	"strings"
@@ -11,6 +12,8 @@ import (
 )
 
 func (cfg *apiConfig) handlerNewUser(w http.ResponseWriter, req *http.Request) {
+	log.Printf("POST /api/users")
+
 	type parameters struct {
 		Email    string `json:"email"`
 		Password string `json:"password"`

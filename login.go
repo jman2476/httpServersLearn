@@ -2,6 +2,7 @@ package main
 
 import (
 	"encoding/json"
+	"log"
 	"net/http"
 	"net/mail"
 	"time"
@@ -15,6 +16,8 @@ func (cfg *apiConfig) handlerLogin(w http.ResponseWriter, req *http.Request) {
 		Email    string `json:"email"`
 		Password string `json:"password"`
 	}
+
+	log.Printf("POST /api/login")
 
 	decoder := json.NewDecoder(req.Body)
 	params := parameters{}

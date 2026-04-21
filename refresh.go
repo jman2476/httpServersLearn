@@ -1,7 +1,9 @@
 package main
 
 import (
+	"context"
 	"errors"
+	"log"
 	"net/http"
 	"time"
 
@@ -11,12 +13,15 @@ import (
 
 var (
 	errExpiredRefreshToken = errors.New("refresh token: token expired")
+	errRevokedRefreshToken = errors.New("refresh token: token revoked")
 )
 
 func (cfg *apiConfig) handlerRefresh(w http.ResponseWriter, req *http.Request) {
 	type response struct {
 		Token string `json:"token"`
 	}
+
+	log.Print("POST /api/refresh")
 
 	refreshToken, err := auth.GetBearerToken(req.Header)
 	if err != nil {
@@ -30,7 +35,7 @@ func (cfg *apiConfig) handlerRefresh(w http.ResponseWriter, req *http.Request) {
 		return
 	}
 
-	if valid, err := verifyRefreshToken(refreshData); !valid {
+	if valid, err := cfg.verifyRefreshToken(refreshData); !valid {
 		respondWithError(w, 401, "Forbidden", err)
 		return
 	}
@@ -44,10 +49,15 @@ func (cfg *apiConfig) handlerRefresh(w http.ResponseWriter, req *http.Request) {
 	respondWithJSON(w, 200, response{Token: newToken})
 }
 
-func verifyRefreshToken(token database.RefreshToken) (bool, error) {
+func (cfg *apiConfig) verifyRefreshToken(token database.RefreshToken) (bool, error) {
+	if token.RevokedAt.Valid {
+		return false, errRevokedRefreshToken
+	}
+
 	timeRemaining := time.Until(token.ExpiresAt)
 
 	if timeRemaining <= 0 {
+		cfg.dbQueries.RevokeToken(context.Background(), token.Token)
 		return false, errExpiredRefreshToken
 	}
 

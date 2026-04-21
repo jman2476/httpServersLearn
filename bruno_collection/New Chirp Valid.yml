@@ -1,7 +1,7 @@
 info:
   name: New Chirp Valid
   type: http
-  seq: 9
+  seq: 8
 
 http:
   method: POST
