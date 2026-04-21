@@ -29,6 +29,7 @@ func (cfg *apiConfig) handlerNewChirp(w http.ResponseWriter, req *http.Request) 
 	token, err := auth.GetBearerToken(req.Header)
 	if err != nil {
 		respondWithError(w, 401, "Forbidden", err)
+		return
 	}
 
 	userID, err := auth.ValidateJWT(token, cfg.secret)
@@ -68,6 +69,13 @@ func (cfg *apiConfig) handlerNewChirp(w http.ResponseWriter, req *http.Request) 
 func (cfg *apiConfig) handlerGetAllChirps(w http.ResponseWriter, req *http.Request) {
 	log.Printf("GET /api/chirps")
 
+	authorID := req.URL.Query().Get("author_id")
+
+	if authorID != "" {
+		cfg.handlerGetChirpsByAuthor(w, req, authorID)
+		return
+	}
+
 	chirps, err := cfg.db.GetAllChirps(req.Context())
 	if err != nil {
 		respondWithError(w, 500, "Error getting chirps", err)
@@ -80,6 +88,27 @@ func (cfg *apiConfig) handlerGetAllChirps(w http.ResponseWriter, req *http.Reque
 	}
 
 	respondWithJSON(w, 200, allChirps)
+}
+
+func (cfg *apiConfig) handlerGetChirpsByAuthor(w http.ResponseWriter, req *http.Request, authorID string) {
+	id, err := uuid.Parse(authorID)
+	if err != nil {
+		respondWithError(w, http.StatusBadRequest, "Malformed author id", err)
+		return
+	}
+
+	chirps, err := cfg.db.GetChirpsByAuthor(req.Context(), id)
+	if err != nil {
+		respondWithError(w, http.StatusNotFound, "No entries found", err)
+		return
+	}
+
+	var authorChirps []Chirp
+	for _, c := range chirps {
+		authorChirps = append(authorChirps, mapChirp(c))
+	}
+
+	respondWithJSON(w, http.StatusOK, authorChirps)
 }
 
 func (cfg *apiConfig) handlerGetChirpByID(w http.ResponseWriter, req *http.Request) {
