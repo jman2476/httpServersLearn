@@ -16,7 +16,7 @@ func (cfg *apiConfig) handleRevoke(w http.ResponseWriter, req *http.Request) {
 		return
 	}
 
-	err = cfg.dbQueries.RevokeToken(req.Context(), refreshToken)
+	err = cfg.db.RevokeToken(req.Context(), refreshToken)
 	if err != nil {
 		respondWithError(w, 401, "Forbidden", err)
 		return

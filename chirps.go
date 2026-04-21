@@ -56,7 +56,7 @@ func (cfg *apiConfig) handlerNewChirp(w http.ResponseWriter, req *http.Request) 
 		UserID: userID,
 	}
 
-	chirp, err := cfg.dbQueries.CreateChirp(req.Context(), chirpArgs)
+	chirp, err := cfg.db.CreateChirp(req.Context(), chirpArgs)
 	if err != nil {
 		respondWithError(w, 500, "Error creating chirp", err)
 		return
@@ -68,7 +68,7 @@ func (cfg *apiConfig) handlerNewChirp(w http.ResponseWriter, req *http.Request) 
 func (cfg *apiConfig) handlerGetAllChirps(w http.ResponseWriter, req *http.Request) {
 	log.Printf("GET /api/chirps")
 
-	chirps, err := cfg.dbQueries.GetAllChirps(req.Context())
+	chirps, err := cfg.db.GetAllChirps(req.Context())
 	if err != nil {
 		respondWithError(w, 500, "Error getting chirps", err)
 		return
@@ -90,7 +90,7 @@ func (cfg *apiConfig) handlerGetChirpByID(w http.ResponseWriter, req *http.Reque
 		respondWithError(w, 400, "Invalid UUID value", err)
 		return
 	}
-	chirp, err := cfg.dbQueries.GetChirpByID(req.Context(), chirp_id)
+	chirp, err := cfg.db.GetChirpByID(req.Context(), chirp_id)
 	if err != nil {
 		respondWithError(w, 404, "Chirp not found", err)
 		return

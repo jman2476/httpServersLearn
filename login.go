@@ -37,7 +37,7 @@ func (cfg *apiConfig) handlerLogin(w http.ResponseWriter, req *http.Request) {
 		return
 	}
 
-	user, err := cfg.dbQueries.GetUserByEmail(req.Context(), email.Address)
+	user, err := cfg.db.GetUserByEmail(req.Context(), email.Address)
 	if err != nil {
 		respondWithError(w, 401, "Forbidden", err)
 		return
@@ -61,7 +61,7 @@ func (cfg *apiConfig) handlerLogin(w http.ResponseWriter, req *http.Request) {
 		UserID: user.ID,
 	}
 
-	refreshToken, err := cfg.dbQueries.CreateRefreshToken(req.Context(), refreshArgs)
+	refreshToken, err := cfg.db.CreateRefreshToken(req.Context(), refreshArgs)
 	if err != nil {
 		respondWithError(w, 500, "Error making refresh token", err)
 		return

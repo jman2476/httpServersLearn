@@ -44,7 +44,7 @@ func (cfg *apiConfig) handlerNewUser(w http.ResponseWriter, req *http.Request) {
 		HashedPassword: hash,
 	}
 
-	user, err := cfg.dbQueries.CreateUser(req.Context(), userArgs)
+	user, err := cfg.db.CreateUser(req.Context(), userArgs)
 	if err != nil {
 		if strings.Contains(err.Error(), "violates unique constraint \"users_email_key\"") {
 			respondWithError(w, 400, "User already exists", err)
@@ -97,7 +97,7 @@ func (cfg *apiConfig) handlerUpdateUser(w http.ResponseWriter, req *http.Request
 		HashedPassword: hashPassword,
 	}
 
-	user, err := cfg.dbQueries.UpdateUserByID(req.Context(), updateArgs)
+	user, err := cfg.db.UpdateUserByID(req.Context(), updateArgs)
 	if err != nil {
 		respondWithError(w, http.StatusInternalServerError, "Database error", err)
 		return

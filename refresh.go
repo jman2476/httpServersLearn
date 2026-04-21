@@ -29,7 +29,7 @@ func (cfg *apiConfig) handlerRefresh(w http.ResponseWriter, req *http.Request) {
 		return
 	}
 
-	refreshData, err := cfg.dbQueries.GetRefreshToken(req.Context(), refreshToken)
+	refreshData, err := cfg.db.GetRefreshToken(req.Context(), refreshToken)
 	if err != nil {
 		respondWithError(w, 401, "Forbidden", err)
 		return
@@ -57,7 +57,7 @@ func (cfg *apiConfig) verifyRefreshToken(token database.RefreshToken) (bool, err
 	timeRemaining := time.Until(token.ExpiresAt)
 
 	if timeRemaining <= 0 {
-		cfg.dbQueries.RevokeToken(context.Background(), token.Token)
+		cfg.db.RevokeToken(context.Background(), token.Token)
 		return false, errExpiredRefreshToken
 	}
 
