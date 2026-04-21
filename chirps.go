@@ -4,6 +4,7 @@ import (
 	"encoding/json"
 	"log"
 	"net/http"
+	"slices"
 	"time"
 
 	"github.com/google/uuid"
@@ -87,6 +88,13 @@ func (cfg *apiConfig) handlerGetAllChirps(w http.ResponseWriter, req *http.Reque
 		allChirps = append(allChirps, mapChirp(c))
 	}
 
+	sortOrder := req.URL.Query().Get("sort")
+	if sortOrder == "desc" {
+		slices.SortFunc(allChirps, func(a, b Chirp) int {
+			return b.CreatedAt.Compare(a.CreatedAt)
+		})
+	}
+
 	respondWithJSON(w, 200, allChirps)
 }
 
@@ -106,6 +114,13 @@ func (cfg *apiConfig) handlerGetChirpsByAuthor(w http.ResponseWriter, req *http.
 	var authorChirps []Chirp
 	for _, c := range chirps {
 		authorChirps = append(authorChirps, mapChirp(c))
+	}
+
+	sortOrder := req.URL.Query().Get("sort")
+	if sortOrder == "desc" {
+		slices.SortFunc(authorChirps, func(a, b Chirp) int {
+			return b.CreatedAt.Compare(a.CreatedAt)
+		})
 	}
 
 	respondWithJSON(w, http.StatusOK, authorChirps)
