@@ -2,9 +2,11 @@ package main
 
 import (
 	"encoding/json"
+	"log"
 	"net/http"
 
 	"github.com/google/uuid"
+	"github.com/jman2476/httpServersLearn/internal/auth"
 )
 
 func (cfg *apiConfig) handlerPolkaWebhook(w http.ResponseWriter, req *http.Request) {
@@ -15,9 +17,22 @@ func (cfg *apiConfig) handlerPolkaWebhook(w http.ResponseWriter, req *http.Reque
 		} `json:"data"`
 	}
 
+	log.Print("POST /api/polka/webhook")
+
+	apiKey, err := auth.GetAPIKey(req.Header)
+	if err != nil {
+		respondWithError(w, http.StatusUnauthorized, "Unauthorized access", err)
+		return
+	}
+
+	if apiKey != cfg.polkaKey {
+		respondWithError(w, http.StatusUnauthorized, "Bad key", err)
+		return
+	}
+
 	decoder := json.NewDecoder(req.Body)
 	params := parameters{}
-	err := decoder.Decode(&params)
+	err = decoder.Decode(&params)
 	if err != nil {
 		respondWithError(w, http.StatusBadRequest, "Bad request", err)
 		return

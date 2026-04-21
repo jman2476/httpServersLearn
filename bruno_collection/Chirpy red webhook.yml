@@ -4,8 +4,20 @@ info:
   seq: 16
 
 http:
-  method: GET
+  method: POST
   url: http://localhost:8080/api/polka/webhooks
+  headers:
+    - name: Authorization
+      value: ApiKey f271c81ff7084ee5b99a5091b42d486e
+  body:
+    type: json
+    data: |-
+      {
+        "event": "user.upgraded",
+        "data": {
+          "user_id": "0326a324-0457-4157-af4d-0c2eb57f5e63"
+        }
+      }
   auth: inherit
 
 settings:

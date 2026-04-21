@@ -8,7 +8,7 @@ http:
   url: http://localhost:8080/api/users
   headers:
     - name: Authorization
-      value: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJjaGlycHktYWNjZXNzIiwic3ViIjoiYTI1Mzk4MzMtNTNlZC00NmQwLWIzZDctNTU1ZTdhZDBiMmIxIiwiZXhwIjoxNzc2ODAzMjA2LCJpYXQiOjE3NzY3OTk2MDZ9.9GDq9Ble6zL3ThvDLp06YeTA4GgVdUDGkZtt31nGs
+      value: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJjaGlycHktYWNjZXNzIiwic3ViIjoiNWM2MGUxZjctYjY0NC00NmQ5LTgyZmQtMTg1NWZhNzZmOTM2IiwiZXhwIjoxNzc2ODA4NzIzLCJpYXQiOjE3NzY4MDUxMjN9.sskAlZ79167VfKvMILjNVefa_DsaesdAcVo7V-Wz_8g
   body:
     type: json
     data: |-
