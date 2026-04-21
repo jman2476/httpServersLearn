@@ -115,7 +115,8 @@ func (q *Queries) UpdateUserByID(ctx context.Context, arg UpdateUserByIDParams) 
 
 const upgradeToRedByID = `-- name: UpgradeToRedByID :exec
 update users
-set is_chirpy_red = true
+set is_chirpy_red = true,
+updated_at = now()
 where id = $1
 `
 

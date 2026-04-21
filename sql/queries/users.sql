@@ -25,5 +25,6 @@ returning id, created_at, updated_at, email, is_chirpy_red;
 
 -- name: UpgradeToRedByID :exec
 update users
-set is_chirpy_red = true
+set is_chirpy_red = true,
+updated_at = now()
 where id = $1;

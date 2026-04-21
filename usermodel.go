@@ -31,6 +31,7 @@ func mapUser[U DatabaseUser](u U, access, refresh string) User {
 			CreatedAt: u.GetCreatedAt(),
 			UpdatedAt: u.GetUpdatedAt(),
 			Email:     u.GetEmail(),
+			ChirpyRed: u.GetChirpyRed(),
 		}
 	}
 	return User{
@@ -38,6 +39,7 @@ func mapUser[U DatabaseUser](u U, access, refresh string) User {
 		CreatedAt: u.GetCreatedAt(),
 		UpdatedAt: u.GetUpdatedAt(),
 		Email:     u.GetEmail(),
+		ChirpyRed: u.GetChirpyRed(),
 		Token:     access,
 		Refresh:   refresh,
 	}
