@@ -1,17 +1,17 @@
 info:
-  name: New Chirp Invalid
+  name: Refresh JWT
   type: http
   seq: 9
 
 http:
   method: POST
-  url: http://localhost:8080/api/chirps
+  url: http://localhost:8080/api/refresh
+  headers:
+    - name: Authorization
+      value: ""
   body:
     type: json
-    data: |-
-      {
-        "body": "this is an invalid chirp"
-      }
+    data: ""
   auth: inherit
 
 settings:

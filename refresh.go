@@ -1,19 +1,55 @@
 package main
 
 import (
+	"errors"
 	"net/http"
+	"time"
 
 	"github.com/jman2476/httpServersLearn/internal/auth"
+	"github.com/jman2476/httpServersLearn/internal/database"
+)
+
+var (
+	errExpiredRefreshToken = errors.New("refresh token: token expired")
 )
 
 func (cfg *apiConfig) handlerRefresh(w http.ResponseWriter, req *http.Request) {
+	type response struct {
+		Token string `json:"token"`
+	}
+
 	refreshToken, err := auth.GetBearerToken(req.Header)
 	if err != nil {
 		respondWithError(w, 401, "Forbidden", err)
+		return
 	}
 
 	refreshData, err := cfg.dbQueries.GetRefreshToken(req.Context(), refreshToken)
 	if err != nil {
 		respondWithError(w, 401, "Forbidden", err)
+		return
 	}
+
+	if valid, err := verifyRefreshToken(refreshData); !valid {
+		respondWithError(w, 401, "Forbidden", err)
+		return
+	}
+
+	newToken, err := auth.MakeJWT(refreshData.UserID, cfg.secret, time.Duration(1)*time.Hour)
+	if err != nil {
+		respondWithError(w, 401, "Forbidden", err)
+		return
+	}
+
+	respondWithJSON(w, 200, response{Token: newToken})
+}
+
+func verifyRefreshToken(token database.RefreshToken) (bool, error) {
+	timeRemaining := time.Until(token.ExpiresAt)
+
+	if timeRemaining <= 0 {
+		return false, errExpiredRefreshToken
+	}
+
+	return true, nil
 }

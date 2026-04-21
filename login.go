@@ -7,6 +7,7 @@ import (
 	"time"
 
 	"github.com/jman2476/httpServersLearn/internal/auth"
+	"github.com/jman2476/httpServersLearn/internal/database"
 )
 
 func (cfg *apiConfig) handlerLogin(w http.ResponseWriter, req *http.Request) {
@@ -51,5 +52,15 @@ func (cfg *apiConfig) handlerLogin(w http.ResponseWriter, req *http.Request) {
 		respondWithError(w, 500, "Error making token", err)
 	}
 
-	respondWithJSON(w, 200, mapUser(user, token, auth.MakeRefreshToken()))
+	refreshArgs := database.CreateRefreshTokenParams{
+		Token:  auth.MakeRefreshToken(),
+		UserID: user.ID,
+	}
+
+	refreshToken, err := cfg.dbQueries.CreateRefreshToken(req.Context(), refreshArgs)
+	if err != nil {
+		respondWithError(w, 500, "Error making refresh token", err)
+	}
+
+	respondWithJSON(w, 200, mapUser(user, token, refreshToken.Token))
 }
