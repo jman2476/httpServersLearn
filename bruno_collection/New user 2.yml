@@ -1,16 +1,16 @@
 info:
-  name: Login user no expiration
+  name: New user 2
   type: http
   seq: 6
 
 http:
   method: POST
-  url: http://localhost:8080/api/login
+  url: http://localhost:8080/api/users
   body:
     type: json
     data: |-
       {
-        "email": "bobthomas@tankengine.com",
+        "email": "bankter@tankengine.com",
         "password": "tootToot"
       }
   auth: inherit

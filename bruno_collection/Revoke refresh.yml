@@ -1,7 +1,7 @@
 info:
   name: Revoke refresh
   type: http
-  seq: 9
+  seq: 11
 
 http:
   method: POST

@@ -1,20 +1,14 @@
 info:
-  name: New Chirp Valid
+  name: Delete chirp
   type: http
-  seq: 10
+  seq: 15
 
 http:
-  method: POST
-  url: http://localhost:8080/api/chirps
+  method: DELETE
+  url: http://localhost:8080/api/chirps/8a3433d2-e3d1-4670-9895-10bf408bb636
   headers:
     - name: Authorization
       value: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJjaGlycHktYWNjZXNzIiwic3ViIjoiOTJhN2YzYmUtYWFkNS00NGFkLWI1OGItYjQzZTM4NTJlZmUzIiwiZXhwIjoxNzc2ODA0NjE1LCJpYXQiOjE3NzY4MDEwMTV9.v88vKbWjU_lny3mP5luk2R19mSndv0eMCeQeFgUpZmE
-  body:
-    type: json
-    data: |-
-      {
-        "body": "To infinity and beyond"
-      }
   auth: inherit
 
 settings:

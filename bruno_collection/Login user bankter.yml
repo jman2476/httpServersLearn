@@ -1,0 +1,22 @@
+info:
+  name: Login user bankter
+  type: http
+  seq: 9
+
+http:
+  method: POST
+  url: http://localhost:8080/api/login
+  body:
+    type: json
+    data: |-
+      {
+        "email": "bankter@tankengine.com",
+        "password": "tootToot"
+      }
+  auth: inherit
+
+settings:
+  encodeUrl: true
+  timeout: 0
+  followRedirects: true
+  maxRedirects: 5
