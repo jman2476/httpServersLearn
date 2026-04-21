@@ -11,6 +11,7 @@ type User struct {
 	CreatedAt time.Time `json:"created_at"`
 	UpdatedAt time.Time `json:"updated_at"`
 	Email     string    `json:"email"`
+	ChirpyRed bool      `json:"is_chirpy_red"`
 	Token     string    `json:"token"`
 	Refresh   string    `json:"refresh_token"`
 }
@@ -20,6 +21,7 @@ type DatabaseUser interface {
 	GetCreatedAt() time.Time
 	GetUpdatedAt() time.Time
 	GetEmail() string
+	GetChirpyRed() bool
 }
 
 func mapUser[U DatabaseUser](u U, access, refresh string) User {

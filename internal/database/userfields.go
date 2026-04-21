@@ -53,3 +53,15 @@ func (u CreateUserRow) GetEmail() string {
 func (u UpdateUserByIDRow) GetEmail() string {
 	return u.Email
 }
+
+func (u User) GetChirpyRed() bool {
+	return u.IsChirpyRed
+}
+
+func (u CreateUserRow) GetChirpyRed() bool {
+	return u.IsChirpyRed
+}
+
+func (u UpdateUserByIDRow) GetChirpyRed() bool {
+	return u.IsChirpyRed
+}

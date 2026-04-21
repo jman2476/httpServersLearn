@@ -5,7 +5,7 @@ values (
     now(),
     now(),
     $1, $2
-) returning id, created_at, updated_at, email;
+) returning id, created_at, updated_at, email, is_chirpy_red;
 
 -- name: ClearUsers :exec
 delete from users;
@@ -21,4 +21,9 @@ set email = $2,
 hashed_password = $3,
 updated_at = now()
 where id = $1
-returning id, created_at, updated_at, email;
+returning id, created_at, updated_at, email, is_chirpy_red;
+
+-- name: UpgradeToRedByID :exec
+update users
+set is_chirpy_red = true
+where id = $1;
