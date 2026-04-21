@@ -8,7 +8,7 @@ http:
   url: http://localhost:8080/api/refresh
   headers:
     - name: Authorization
-      value: Bearer 73ad9a542cddb7f1cd17a2fed59ad47b45e86a69b801d70b27e49339ff539777
+      value: Bearer c28bfc6492ebc88cae24815b9c924f7006b4fe35750d1483b035f1f9aa77c30e
   body:
     type: json
     data: ""

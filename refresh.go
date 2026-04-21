@@ -40,7 +40,7 @@ func (cfg *apiConfig) handlerRefresh(w http.ResponseWriter, req *http.Request) {
 		return
 	}
 
-	newToken, err := auth.MakeJWT(refreshData.UserID, cfg.secret, time.Duration(1)*time.Hour)
+	newToken, err := auth.MakeJWT(refreshData.UserID, cfg.secret, time.Hour)
 	if err != nil {
 		respondWithError(w, 401, "Forbidden", err)
 		return

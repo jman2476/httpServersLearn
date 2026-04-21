@@ -8,7 +8,7 @@ http:
   url: http://localhost:8080/api/chirps
   headers:
     - name: Authorization
-      value: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJjaGlycHktYWNjZXNzIiwic3ViIjoiOTQ0YmU1N2YtYjNiNC00OGU3LTliZWUtZjc4MjFmNDhmOTM4IiwiZXhwIjoxNzc2NzA1MjQzLCJpYXQiOjE3NzY3MDQ5NDN9.8-5rISSJC37hhejBji_GM540CxZkOst3wUGJVNxo-Nw
+      value: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJjaGlycHktYWNjZXNzIiwic3ViIjoiODVmYzEyOTktNGYwZC00MGQ3LWJlNDYtZGQ3OTA0ZDJlY2IxIiwiZXhwIjoxNzc2ODAwNzYxLCJpYXQiOjE3NzY3OTcxNjF9.lj6Ym25RfmRHoHVBVtYVgBm8S_FbuTxkmMAtMv7afuc
   body:
     type: json
     data: |-

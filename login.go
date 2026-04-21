@@ -49,10 +49,11 @@ func (cfg *apiConfig) handlerLogin(w http.ResponseWriter, req *http.Request) {
 		return
 	}
 
-	token, err := auth.MakeJWT(user.ID, cfg.secret, time.Duration(1)*time.Hour)
+	token, err := auth.MakeJWT(user.ID, cfg.secret, time.Hour)
 
 	if err != nil {
 		respondWithError(w, 500, "Error making token", err)
+		return
 	}
 
 	refreshArgs := database.CreateRefreshTokenParams{
@@ -63,6 +64,7 @@ func (cfg *apiConfig) handlerLogin(w http.ResponseWriter, req *http.Request) {
 	refreshToken, err := cfg.dbQueries.CreateRefreshToken(req.Context(), refreshArgs)
 	if err != nil {
 		respondWithError(w, 500, "Error making refresh token", err)
+		return
 	}
 
 	respondWithJSON(w, 200, mapUser(user, token, refreshToken.Token))

@@ -13,6 +13,13 @@ values (
 select * from refresh_tokens
 where token = $1;
 
+-- name: GetUserfromRefreshToken :one
+select users.* from users
+join refresh_tokens on users.id = refresh_tokens.user_id
+where refresh_tokens.token = $1
+and revoked_at is null
+and expires_at > now();
+
 -- name: RevokeToken :exec
 update refresh_tokens
 set updated_at = now(), revoked_at = now()
